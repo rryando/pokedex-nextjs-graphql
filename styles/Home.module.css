@@ -114,3 +114,18 @@
     flex-direction: column;
   }
 }
+
+.pokemonCardContainer {
+  max-width: 576px;
+  text-align: center;
+  margin: auto;
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
+.pokemonCardGridWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  /* flex-direction: column; */
+  padding: 8px;
+}
