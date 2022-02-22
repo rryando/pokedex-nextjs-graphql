@@ -7,7 +7,7 @@ import {
   InlineContentList,
   ProgressBar,
   Timeline,
-  Overlay,
+  BottomAlert,
 } from "../../blocks";
 
 import {
@@ -115,11 +115,13 @@ export default function PokemonDetailsView() {
   return (
     <div className={styles.container} id={"pokemonDetailBG"}>
       {isError && (
-        <Overlay
-          title={"something went wrong, is your internet connection working?"}
-          content={"if you want to browse offline, click anywhere to dismiss"}
+        <BottomAlert
+          title={"something went wrong, on our End"}
+          content={"please try again later"}
+          bg={"red"}
         />
       )}
+
       <div className={styles.pokemonDetailsTopNav}>
         <div className={styles.pokemonDetailsTopNavLeft}>
           <Link href="/">

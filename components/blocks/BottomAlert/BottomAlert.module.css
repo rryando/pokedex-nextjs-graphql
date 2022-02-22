@@ -1,0 +1,24 @@
+.bottomAlert {
+  position: fixed; /* Sit on top of the page content */
+  width: 80vw; /* Full width (cover the whole page) */
+  height: 10vh;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  /* padding: 2vw; */
+  background: rgb(255, 187, 40); /* Black background with opacity */
+  z-index: 5; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+  border-radius: 8px;
+}
+
+.bottomAlertWrapper {
+  width: 100vw;
+  margin: auto;
+  text-align: center;
+}
+
+.bottomAlertContent {
+  color: white;
+}

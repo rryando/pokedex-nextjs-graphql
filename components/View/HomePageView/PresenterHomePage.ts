@@ -6,14 +6,12 @@ import {
   PokemonResultsType,
 } from "../../shared/ModelPokemon";
 import { debounce } from "../../../utils/debounce";
-import useOfflineDetection from "../../../utils/useOfflineDetection";
 import getValue from "../../../utils/localForageSync";
 
 // limit per fetch for pagination
 const MAX_PAGE_LIMIT_PER_LOAD = 20;
 
 export default function usePresenterHomePage() {
-  const { online } = useOfflineDetection();
   const [pagination, setPagination] = React.useState<RequestPagination>({
     offset: 0,
     limit: MAX_PAGE_LIMIT_PER_LOAD,
@@ -33,7 +31,6 @@ export default function usePresenterHomePage() {
     async function getPokemonDataFromStorage() {
       const storageFetchResponse = await getValue("pokemonDetails");
       const pokemonData = await getValue("pokemonData");
-
       if (pokemonData) {
         // @ts-ignore because value from localForage was misalign with type
         setPokemonData({ pokemons: pokemonData });
@@ -63,6 +60,7 @@ export default function usePresenterHomePage() {
   // fetch data from API
   const handleFetchPokemonFromGraphQL = async (payload: RequestPagination) => {
     setIsError(false);
+    setIsMoreCardLoading(false);
     const fetchPokemonResult = await fetchPokemonGraphql(payload);
 
     if (!fetchPokemonResult) {
@@ -83,7 +81,7 @@ export default function usePresenterHomePage() {
     setPagination((prevState: RequestPagination) => ({
       offset: prevState.offset + prevState.limit,
       limit: prevState.limit,
-      count: pokemonData.pokemons.length + fetchPokemonResult.pokemons.length,
+      count: pokemonData?.pokemons.length + fetchPokemonResult.pokemons.length,
     }));
 
     setIsMoreCardLoading(false);
@@ -113,7 +111,6 @@ export default function usePresenterHomePage() {
     triggerFetch,
     handleScroll,
     isMoreCardLoading,
-    online,
     isOfflineReady,
     isError,
   };

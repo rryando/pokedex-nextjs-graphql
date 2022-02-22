@@ -111,7 +111,8 @@ export function fetchPokemonGraphql(req?: RequestPagination) {
       return response.data.data;
     })
     .catch((error) => {
-      return { error };
+      console.error(error);
+      return;
     });
 }
 
@@ -129,7 +130,8 @@ export function fetchPokemonDetailGraphql(req: RequestPokemonDetailName) {
       return response.data.data;
     })
     .catch((error) => {
-      return { error };
+      console.error(error);
+      return;
     });
 }
 

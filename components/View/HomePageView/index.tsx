@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./styles/HomePage.module.css";
-import { Cards, Overlay } from "../../blocks";
+import { Cards, BottomAlert } from "../../blocks";
 import usePresenterHomePage from "./PresenterHomePage";
 import { PokemonResultType } from "../../shared/ModelPokemon";
 import { pokemonImageLoader } from "../../../utils/imageLoader";
@@ -10,23 +10,17 @@ export default function HomePageView() {
     pokemonData,
     handleScroll,
     isMoreCardLoading,
-    online,
     isOfflineReady,
     isError,
   } = usePresenterHomePage();
 
   return (
     <div className={styles.container}>
-      {!online && (
-        <div className={styles.pokemonCardContainer}>
-          <h4>{"you are offline"}</h4>
-        </div>
-      )}
-
       {isError && (
-        <Overlay
-          title={"something went wrong, is your internet connection working?"}
-          content={"if you want to browse offline, click anywhere to dismiss"}
+        <BottomAlert
+          title={"something went wrong, on our End"}
+          content={"please try again later"}
+          bg={"red"}
         />
       )}
 
@@ -40,11 +34,11 @@ export default function HomePageView() {
             (pokemon: PokemonResultType, idx: number) => (
               <Cards
                 key={idx}
-                id={pokemon.id}
-                name={pokemon.name}
+                id={pokemon.id || 0}
+                name={pokemon.name || ""}
                 imgUrl={pokemonImageLoader(pokemon.id)}
                 isLoading={false}
-                offlineReady={isOfflineReady(pokemon.name)}
+                offlineReady={isOfflineReady(pokemon.name || "")}
               />
             )
           )}

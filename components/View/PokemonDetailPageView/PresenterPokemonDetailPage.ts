@@ -5,7 +5,7 @@ import {
   fetchPokemonDetailGraphql,
   PokemonDetailsResultsType,
 } from "../../shared/ModelPokemon";
-import useOfflineDetection from "../../../utils/useOfflineDetection";
+import useOfflineDetection from "../../shared/useOfflineDetection";
 import getValue from "../../../utils/localForageSync";
 
 export default function usePresenterPokemonDetail() {

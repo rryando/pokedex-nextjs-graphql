@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function useOfflineDetection() {
-  let [online, isOnline] = React.useState(false);
+  let [online, isOnline] = React.useState<boolean>(false);
 
   const setOnline = () => {
     isOnline(true);
