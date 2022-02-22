@@ -11,7 +11,6 @@ import getValue from "../../../utils/localForageSync";
 export default function usePresenterPokemonDetail() {
   const router = useRouter();
   const { pokemonName } = router.query;
-  const { online } = useOfflineDetection();
   const [isError, setIsError] = React.useState(false);
   const [pokemonDetails, setPokemonDetails] =
     React.useState<PokemonDetailsResultsType["result"][0]>();
@@ -63,7 +62,6 @@ export default function usePresenterPokemonDetail() {
   return {
     pokemonName,
     pokemonDetails,
-    online,
     isError,
   };
 }

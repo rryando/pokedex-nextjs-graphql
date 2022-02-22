@@ -37,7 +37,7 @@ export default function Cards(props: CardProps) {
           <>
             <ImageWrapper
               loader={() => pokemonImageLoader(props.id)}
-              src={props.imgUrl}
+              src={imageLoader()}
               loading={"lazy"}
               className={styles.pokemonDetailsImage}
               width={300}
