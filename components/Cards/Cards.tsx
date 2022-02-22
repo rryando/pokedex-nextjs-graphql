@@ -1,12 +1,18 @@
 import React from "react";
 import Link from "next/link";
 import styles from "./Card.module.css";
+import {
+  imageLoader,
+  pokemonImageLoader,
+  ImageWrapper,
+} from "../../utils/imageLoader";
 
 export type CardProps = {
   name: string;
   id: number;
   imgUrl: string;
   isLoading: boolean;
+  offlineReady?: boolean;
 };
 
 export default function Cards(props: CardProps) {
@@ -29,13 +35,18 @@ export default function Cards(props: CardProps) {
           </>
         ) : (
           <>
-            <img
-              src={props.imgUrl}
-              alt={props.name}
-              style={{ width: "100%" }}
+            <ImageWrapper
+              loader={() => pokemonImageLoader(props.id)}
+              src={imageLoader()}
               loading={"lazy"}
+              className={styles.pokemonDetailsImage}
+              width={300}
+              height={300}
             />
             <div className={styles.cardInfoContainer}>
+              {props.offlineReady && (
+                <button className={styles.pillButton}>{"offline ✔️ "}</button>
+              )}
               <h4>
                 <b>{parseId(props.id)}</b>
               </h4>

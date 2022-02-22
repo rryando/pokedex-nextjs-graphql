@@ -1,14 +1,18 @@
 import React from "react";
+import localForage from "localforage";
 import {
   fetchPokemonGraphql,
   RequestPagination,
   PokemonResultsType,
 } from "./ModelPokemon";
 import { debounce } from "../../utils/debounce";
+import useOfflineDetection from "../../utils/useOfflineDetection";
+import getValue from "../../utils/localForageSync";
 
 const MAX_PAGE_LIMIT_PER_LOAD = 20;
 
 export default function usePresenterPokemonAPI() {
+  const { online } = useOfflineDetection();
   const [pagination, setPagination] = React.useState<RequestPagination>({
     offset: 0,
     limit: MAX_PAGE_LIMIT_PER_LOAD,
@@ -18,12 +22,35 @@ export default function usePresenterPokemonAPI() {
   const [pokemonData, setPokemonData] = React.useState<PokemonResultsType>({
     pokemons: [],
   });
-
+  const [offlinePokemonList, setOfflinePokemonList] = React.useState([]);
   const [isMoreCardLoading, setIsMoreCardLoading] = React.useState(false);
 
   // on mount, initial load pokemon
   React.useEffect(() => {
-    triggerFetch();
+    async function getPokemonDataFromStorage() {
+      const storageFetchResponse = await getValue("pokemonDetails");
+      const pokemonData = await getValue("pokemonData");
+
+      if (pokemonData) {
+        // @ts-ignore
+        setPokemonData({ pokemons: pokemonData });
+        setPagination({
+          // @ts-ignore
+          offset: pokemonData.length,
+          limit: MAX_PAGE_LIMIT_PER_LOAD,
+          // @ts-ignore
+          count: pokemonData.length,
+        });
+      } else {
+        triggerFetch();
+      }
+
+      console.log(storageFetchResponse);
+      // @ts-ignore
+      setOfflinePokemonList(storageFetchResponse);
+    }
+
+    getPokemonDataFromStorage();
   }, []);
 
   const triggerFetch = () => {
@@ -46,9 +73,15 @@ export default function usePresenterPokemonAPI() {
 
   const handleFetchPokemonFromGraphQL = async (payload: RequestPagination) => {
     const fetchPokemonResult = await fetchPokemonGraphql(payload);
-    setPokemonData((prevState: PokemonResultsType) => ({
-      pokemons: [...prevState.pokemons, ...fetchPokemonResult.pokemons],
-    }));
+    setPokemonData((prevState: PokemonResultsType) => {
+      const pokemonData = [
+        ...prevState.pokemons,
+        ...fetchPokemonResult.pokemons,
+      ];
+      localForage.setItem("pokemonData", pokemonData);
+
+      return { pokemons: pokemonData };
+    });
 
     setPagination((prevState: RequestPagination) => ({
       offset: prevState.offset + prevState.limit,
@@ -60,7 +93,14 @@ export default function usePresenterPokemonAPI() {
   };
 
   const getPokemonSpriteImageUrl = (pokemonId: Number = 1) => {
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
+      pokemonId || 1
+    }.png`;
+  };
+
+  const isOfflineReady = (pokemonName: string) => {
+    // @ts-ignore
+    return Boolean(offlinePokemonList[pokemonName]);
   };
 
   return {
@@ -69,5 +109,7 @@ export default function usePresenterPokemonAPI() {
     triggerFetch,
     handleScroll,
     isMoreCardLoading,
+    online,
+    isOfflineReady,
   };
 }

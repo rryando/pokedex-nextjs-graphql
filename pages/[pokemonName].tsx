@@ -2,16 +2,23 @@ import React from "react";
 import Link from "next/link";
 import styles from "../styles/PokemonDetails.module.css";
 import usePresenterPokemonDetail from "./api/PresenterPokemonDetail";
-import ScrollableTray from "../components/ScrollableTray/ScrollableTray";
-import InlineContentList from "../components/InlineContentList/InlineContentList";
-import ProgressBar from "../components/ProgressBar/ProgressBar";
-import Timeline from "../components/Timeline/Timeline";
+import {
+  ScrollableTray,
+  InlineContentList,
+  ProgressBar,
+  Timeline,
+} from "../components";
+
+import {
+  imageLoader,
+  pokemonImageLoader,
+  ImageWrapper,
+} from "../utils/imageLoader";
 
 export default function PokemonDetailsView() {
-  const { pokemonName, pokemonDetails } = usePresenterPokemonDetail();
-  const [pokemonNameVarian, setPokemonNameVarian] = React.useState(pokemonName);
+  const { pokemonName, pokemonDetails, online } = usePresenterPokemonDetail();
 
-  const getPokemonDetailByName = (name: any = pokemonNameVarian) => {
+  const getPokemonDetailByName = (name: any = pokemonName) => {
     return pokemonDetails?.pokemons?.filter(
       (pokemon: any) => pokemon.name === name
     )[0];
@@ -27,19 +34,29 @@ export default function PokemonDetailsView() {
       types = [],
     } = getPokemonDetailByName(pokemonDetailName) || {};
 
-    const abilityList = abilities?.map((ability: any) => {
-      return <span style={{ marginRight: "8px" }}>{ability.ability.name}</span>;
+    const abilityList = abilities?.map((ability: any, idx: number) => {
+      return (
+        <span key={idx} style={{ marginRight: "8px" }}>
+          {ability.ability.name}
+        </span>
+      );
     });
 
-    const typeList = types?.map((type: any) => {
-      return <span style={{ marginRight: "8px" }}>{type.type.name}</span>;
+    const typeList = types?.map((type: any, idx: number) => {
+      return (
+        <span key={idx} style={{ marginRight: "8px" }}>
+          {type.type.name}
+        </span>
+      );
     });
 
     return (
       <div style={{ textAlign: "left" }}>
         <h4 className={styles.contentHead}>{"Description"}</h4>
-        {pokemonDetails?.description.map((desc) => (
-          <p className={styles.contentValue}>{desc.flavor_text}</p>
+        {pokemonDetails?.description.map((desc, idx: number) => (
+          <p key={idx} className={styles.contentValue}>
+            {desc.flavor_text}
+          </p>
         ))}
 
         <h4 className={styles.contentHead}>{"About"}</h4>
@@ -71,8 +88,12 @@ export default function PokemonDetailsView() {
     return (
       <div style={{ textAlign: "left" }}>
         <h4 className={styles.contentHead}>{"Status"}</h4>
-        {stats?.map((stat: any) => (
-          <ProgressBar title={stat.stat.name} value={stat.base_stat} />
+        {stats?.map((stat: any, idx: number) => (
+          <ProgressBar
+            key={idx}
+            title={stat.stat.name}
+            value={stat.base_stat}
+          />
         ))}
       </div>
     );
@@ -92,10 +113,7 @@ export default function PokemonDetailsView() {
   return (
     <div className={styles.container}>
       <div className={styles.pokemonDetailsTopNav}>
-        <div
-          className={styles.pokemonDetailsTopNavLeft}
-          onClick={() => console.log("click")}
-        >
+        <div className={styles.pokemonDetailsTopNavLeft}>
           <Link href="/">
             <div style={{ cursor: "pointer" }}>
               <i className={`${styles.arrow} ${styles.left}`}></i>
@@ -106,20 +124,22 @@ export default function PokemonDetailsView() {
       </div>
       <div className={styles.pokemonCardContainer}> </div>
       <div className={styles.pokemonDetailsBG}>
-        <img
-          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
-            pokemonDetails?.id || 0
-          }.png`}
+        {!online && <h4 className={styles.contentHead}>{"You're Offline"}</h4>}
+        <ImageWrapper
+          loader={() => pokemonImageLoader(pokemonDetails?.id)}
+          src={imageLoader()}
           loading={"lazy"}
           className={styles.pokemonDetailsImage}
+          width={300}
+          height={300}
         />
       </div>
       <ScrollableTray
         aboutSectionTitle={"About"}
         statusSectionTitle={"Status"}
         evolutionSectionTitle={"Evolution"}
-        aboutSection={aboutSectionChildren(pokemonNameVarian)}
-        statusSection={statusSectionChildren(pokemonNameVarian)}
+        aboutSection={aboutSectionChildren(pokemonName)}
+        statusSection={statusSectionChildren(pokemonName)}
         evolutionSection={evoSectionChildren()}
       />
     </div>
