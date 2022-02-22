@@ -4,14 +4,15 @@ import {
   fetchPokemonGraphql,
   RequestPagination,
   PokemonResultsType,
-} from "./ModelPokemon";
-import { debounce } from "../../utils/debounce";
-import useOfflineDetection from "../../utils/useOfflineDetection";
-import getValue from "../../utils/localForageSync";
+} from "../../shared/ModelPokemon";
+import { debounce } from "../../../utils/debounce";
+import useOfflineDetection from "../../../utils/useOfflineDetection";
+import getValue from "../../../utils/localForageSync";
 
+// limit per fetch for pagination
 const MAX_PAGE_LIMIT_PER_LOAD = 20;
 
-export default function usePresenterPokemonAPI() {
+export default function usePresenterHomePage() {
   const { online } = useOfflineDetection();
   const [pagination, setPagination] = React.useState<RequestPagination>({
     offset: 0,
@@ -24,53 +25,51 @@ export default function usePresenterPokemonAPI() {
   });
   const [offlinePokemonList, setOfflinePokemonList] = React.useState([]);
   const [isMoreCardLoading, setIsMoreCardLoading] = React.useState(false);
+  const [isError, setIsError] = React.useState(false);
 
   // on mount, initial load pokemon
   React.useEffect(() => {
+    // fetch data from localForage
     async function getPokemonDataFromStorage() {
       const storageFetchResponse = await getValue("pokemonDetails");
       const pokemonData = await getValue("pokemonData");
 
       if (pokemonData) {
-        // @ts-ignore
+        // @ts-ignore because value from localForage was misalign with type
         setPokemonData({ pokemons: pokemonData });
+        // update pagination so no need to load more if localForage has data
         setPagination({
-          // @ts-ignore
+          // @ts-ignore because value from localForage was misalign with type
           offset: pokemonData.length,
           limit: MAX_PAGE_LIMIT_PER_LOAD,
-          // @ts-ignore
+          // @ts-ignorebecause value from localForage was misalign with type
           count: pokemonData.length,
         });
       } else {
         triggerFetch();
       }
-      // @ts-ignore
+      // @ts-ignore because value from localForage was misalign with type
       if (storageFetchResponse) setOfflinePokemonList(storageFetchResponse);
     }
 
     getPokemonDataFromStorage();
   }, []);
 
+  // wrapper for fetching data from graphql
   const triggerFetch = () => {
     handleFetchPokemonFromGraphQL(pagination);
   };
 
-  const handleScroll = debounce((e: any) => {
-    const scrollTop = e.target.scrollTop;
-    const scrollHeight = e.target.scrollHeight;
-    const clientHeight = e.target.clientHeight;
-
-    // do nothing if count is max
-    if (pagination.count < pagination.offset) return;
-
-    if (scrollTop + clientHeight >= scrollHeight) {
-      setIsMoreCardLoading(true);
-      triggerFetch();
-    }
-  }, 250);
-
+  // fetch data from API
   const handleFetchPokemonFromGraphQL = async (payload: RequestPagination) => {
+    setIsError(false);
     const fetchPokemonResult = await fetchPokemonGraphql(payload);
+
+    if (!fetchPokemonResult) {
+      setIsError(true);
+      return;
+    }
+
     setPokemonData((prevState: PokemonResultsType) => {
       const pokemonData = [
         ...prevState.pokemons,
@@ -90,11 +89,19 @@ export default function usePresenterPokemonAPI() {
     setIsMoreCardLoading(false);
   };
 
-  const getPokemonSpriteImageUrl = (pokemonId: Number = 1) => {
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
-      pokemonId || 1
-    }.png`;
-  };
+  const handleScroll = debounce((e: any) => {
+    const scrollTop = e.target.scrollTop;
+    const scrollHeight = e.target.scrollHeight;
+    const clientHeight = e.target.clientHeight;
+
+    // do nothing if count is max
+    if (pagination.count < pagination.offset) return;
+
+    if (scrollTop + clientHeight >= scrollHeight) {
+      setIsMoreCardLoading(true);
+      triggerFetch();
+    }
+  }, 250);
 
   const isOfflineReady = (pokemonName: string) => {
     // @ts-ignore
@@ -103,11 +110,11 @@ export default function usePresenterPokemonAPI() {
 
   return {
     pokemonData,
-    getPokemonSpriteImageUrl,
     triggerFetch,
     handleScroll,
     isMoreCardLoading,
     online,
     isOfflineReady,
+    isError,
   };
 }

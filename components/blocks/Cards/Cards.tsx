@@ -5,7 +5,7 @@ import {
   imageLoader,
   pokemonImageLoader,
   ImageWrapper,
-} from "../../utils/imageLoader";
+} from "../../../utils/imageLoader";
 
 export type CardProps = {
   name: string;
@@ -37,7 +37,7 @@ export default function Cards(props: CardProps) {
           <>
             <ImageWrapper
               loader={() => pokemonImageLoader(props.id)}
-              src={imageLoader()}
+              src={props.imgUrl}
               loading={"lazy"}
               className={styles.pokemonDetailsImage}
               width={300}

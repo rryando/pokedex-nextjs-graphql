@@ -106,9 +106,13 @@ export function fetchPokemonGraphql(req?: RequestPagination) {
     data: {
       query: payload,
     },
-  }).then((response) => {
-    return response.data.data;
-  });
+  })
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((error) => {
+      return { error };
+    });
 }
 
 export function fetchPokemonDetailGraphql(req: RequestPokemonDetailName) {
@@ -120,9 +124,13 @@ export function fetchPokemonDetailGraphql(req: RequestPokemonDetailName) {
     data: {
       query: payload,
     },
-  }).then((response) => {
-    return response.data.data;
-  });
+  })
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((error) => {
+      return { error };
+    });
 }
 
 export type RequestPagination = {

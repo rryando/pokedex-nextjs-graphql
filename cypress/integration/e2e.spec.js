@@ -14,8 +14,8 @@ describe("Navigation", () => {
   it("should fetch new pokemon on scroll", () => {
     cy.visit("localhost:3000/");
     // Start from the index page
-    cy.get("#scroll-container").scrollTo(0, 2000);
-    cy.contains("#013").should("be.visible");
+    cy.get("#scroll-container").scrollTo(0, 10000);
+    cy.contains("#053").should("be.visible");
   });
   it("should navigate to the details page", () => {
     // Start from the index page

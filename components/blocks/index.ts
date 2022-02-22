@@ -3,3 +3,4 @@ export { default as InlineContentList } from "./InlineContentList/InlineContentL
 export { default as ProgressBar } from "./ProgressBar/ProgressBar";
 export { default as ScrollableTray } from "./ScrollableTray/ScrollableTray";
 export { default as Timeline } from "./Timeline/Timeline";
+export { default as Overlay } from "./Overlay/Overlay";

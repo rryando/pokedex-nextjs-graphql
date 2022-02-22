@@ -5,7 +5,7 @@ import {
   imageLoader,
   pokemonImageLoader,
   ImageWrapper,
-} from "../../utils/imageLoader";
+} from "../../../utils/imageLoader";
 
 type TimelineContent = {
   name: string;

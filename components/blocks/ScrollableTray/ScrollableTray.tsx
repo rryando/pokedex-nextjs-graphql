@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./ScrollableTray.module.css";
-import { debounce } from "../../utils/debounce";
+import { debounce } from "../../../utils/debounce";
 
 export type Props = {
   aboutSectionTitle: string;

@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import {
   fetchPokemonDetailGraphql,
   PokemonDetailsResultsType,
-} from "./ModelPokemon";
-import useOfflineDetection from "../../utils/useOfflineDetection";
-import getValue from "../../utils/localForageSync";
+} from "../../shared/ModelPokemon";
+import useOfflineDetection from "../../../utils/useOfflineDetection";
+import getValue from "../../../utils/localForageSync";
 
 export default function usePresenterPokemonDetail() {
   const router = useRouter();
@@ -19,13 +19,14 @@ export default function usePresenterPokemonDetail() {
   React.useEffect(() => {
     async function getPokemonDetailsFromStorage() {
       const storageFetchResponse = (await getValue("pokemonDetails")) || [];
-      // @ts-ignore
-      if (pokemonName && Boolean(storageFetchResponse[pokemonName])) {
-        // @ts-ignore
+      // @ts-ignore because value from localForage was misalign with type
+      if (Boolean(storageFetchResponse[pokemonName])) {
+        // @ts-ignore because value from localForage was misalign with type
         setPokemonDetails(storageFetchResponse[pokemonName]);
         return;
       } else {
         handleFetchPokemonDetailFromGraphQL();
+        return;
       }
     }
 
@@ -34,42 +35,29 @@ export default function usePresenterPokemonDetail() {
   }, [pokemonName]);
 
   const handleFetchPokemonDetailFromGraphQL = async () => {
-    console.log("try");
     setIsError(false);
     const fetchPokemonResult = await fetchPokemonDetailGraphql({
       name: pokemonName || "bulbasaur",
     });
+
+    if (!fetchPokemonResult) {
+      setIsError(true);
+      return;
+    }
+
     const storageFetchResponse = (await getValue("pokemonDetails")) || [];
 
-    // @ts-ignore
+    // @ts-ignore because value from localForage was misalign with type
     if (!storageFetchResponse[pokemonName]) {
       await localForage.setItem("pokemonDetails", {
-        // @ts-ignore
+        // @ts-ignore because value from localForage was misalign with type
         ...storageFetchResponse,
-        // @ts-ignore
+        // @ts-ignore because value from localForage was misalign with type
         [pokemonName]: fetchPokemonResult.result[0],
       });
     }
 
-    if (fetchPokemonResult.result[0]) {
-      setPokemonDetails(fetchPokemonResult.result[0]);
-    } else {
-      setIsError(true);
-    }
-
-    // localForage.getItem("pokemonDetails", (err, value: any) => {
-    //   if (err) {
-    //     console.log("error", err);
-    //   }
-    //   // @ts-ignore because value can't be set to type
-    //   if (value[pokemonName]) {
-    //     localForage.setItem("pokemonDetails", {
-    //       ...value,
-    //       // @ts-ignore
-    //       [pokemonName]: fetchPokemonResult.result[0],
-    //     });
-    //   }
-    // });
+    setPokemonDetails(fetchPokemonResult.result[0]);
   };
 
   return {
