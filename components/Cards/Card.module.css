@@ -4,8 +4,9 @@
   transition: 0.3s;
   border-radius: 8px;
   flex: 1;
-  min-width: 250px;
+  min-width: 170px;
   margin: 8px;
+  cursor: pointer;
 }
 
 /* On mouse-over, add a deeper shadow */

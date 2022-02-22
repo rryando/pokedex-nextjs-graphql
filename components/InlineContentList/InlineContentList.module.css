@@ -1,0 +1,16 @@
+.contentInline {
+  display: flex;
+  align-content: space-between;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-right: 20vw;
+}
+
+.contentLabel {
+  width: 30vw;
+}
+
+.contentValue {
+  flex: 1;
+  text-align: "left";
+}
