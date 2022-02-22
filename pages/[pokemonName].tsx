@@ -16,7 +16,8 @@ import {
 } from "../utils/imageLoader";
 
 export default function PokemonDetailsView() {
-  const { pokemonName, pokemonDetails, online } = usePresenterPokemonDetail();
+  const { pokemonName, pokemonDetails, online, isError } =
+    usePresenterPokemonDetail();
 
   const getPokemonDetailByName = (name: any = pokemonName) => {
     return pokemonDetails?.pokemons?.filter(
@@ -111,7 +112,7 @@ export default function PokemonDetailsView() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id={"pokemonDetailBG"}>
       <div className={styles.pokemonDetailsTopNav}>
         <div className={styles.pokemonDetailsTopNavLeft}>
           <Link href="/">
@@ -122,9 +123,16 @@ export default function PokemonDetailsView() {
           </Link>
         </div>
       </div>
-      <div className={styles.pokemonCardContainer}> </div>
       <div className={styles.pokemonDetailsBG}>
-        {!online && <h4 className={styles.contentHead}>{"You're Offline"}</h4>}
+        {!online && (
+          <h4
+            className={styles.contentHead}
+            style={{ marginBottom: "20px" }}
+            id={"offline-details-text"}
+          >
+            {"You're Offline"}
+          </h4>
+        )}
         <ImageWrapper
           loader={() => pokemonImageLoader(pokemonDetails?.id)}
           src={imageLoader()}

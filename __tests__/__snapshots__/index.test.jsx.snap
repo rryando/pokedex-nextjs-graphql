@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home renders a card as fetch complete 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="pokemonCardContainer"
+  >
+    <div
+      class="pokemonCardGridWrapper"
+    />
+  </div>
+</div>
+`;
+
+exports[`Home renders a correctly 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="pokemonCardContainer"
+  >
+    <div
+      class="pokemonCardGridWrapper"
+    />
+  </div>
+</div>
+`;
+
+exports[`Home renders a correctly with pokemonData 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="pokemonCardContainer"
+  >
+    <div
+      class="pokemonCardGridWrapper"
+    />
+  </div>
+</div>
+`;

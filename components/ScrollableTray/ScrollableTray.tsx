@@ -61,6 +61,7 @@ export default function ScrollableTray(props: Props) {
               scrollTo(statsRef);
               setActiveSection("stats");
             }}
+            id={"scrollable-status-section-header"}
           >
             <h4>{props.statusSectionTitle || "Status"}</h4>
           </div>
@@ -83,6 +84,7 @@ export default function ScrollableTray(props: Props) {
       <div
         className={styles.scrollableTrayContent}
         onScroll={() => handleScroll()}
+        id={"scrollableTrayContent"}
       >
         <div ref={aboutRef} id={"about"}>
           {props.aboutSection}

@@ -1,0 +1,210 @@
+[
+  {
+    "id": 12,
+    "name": "butterfree",
+    "description": [
+      {
+        "flavor_text": "In battle, it\nflaps its wings\nat high speed to\frelease highly\ntoxic dust into\nthe air."
+      }
+    ],
+    "gender_rate": 4,
+    "has_gender_differences": true,
+    "capture_rate": 45,
+    "evolution": {
+      "pokemon": [
+        {
+          "name": "caterpie",
+          "id": 10,
+          "evolutions": []
+        },
+        {
+          "name": "metapod",
+          "id": 11,
+          "evolutions": [
+            {
+              "min_level": 7,
+              "min_affection": null,
+              "min_beauty": null,
+              "min_happiness": null,
+              "gender_id": null,
+              "time_of_day": "",
+              "move": null,
+              "by_held_item": null,
+              "item": null,
+              "evolution_trigger": {
+                "name": "level-up"
+              },
+              "location": null
+            }
+          ]
+        },
+        {
+          "name": "butterfree",
+          "id": 12,
+          "evolutions": [
+            {
+              "min_level": 10,
+              "min_affection": null,
+              "min_beauty": null,
+              "min_happiness": null,
+              "gender_id": null,
+              "time_of_day": "",
+              "move": null,
+              "by_held_item": null,
+              "item": null,
+              "evolution_trigger": {
+                "name": "level-up"
+              },
+              "location": null
+            }
+          ]
+        }
+      ]
+    },
+    "egg_groups": [
+      {
+        "group": {
+          "name": "bug"
+        }
+      }
+    ],
+    "pokemons": [
+      {
+        "id": 12,
+        "name": "butterfree",
+        "height": 11,
+        "weight": 320,
+        "types": [
+          {
+            "type": {
+              "name": "bug"
+            }
+          },
+          {
+            "type": {
+              "name": "flying"
+            }
+          }
+        ],
+        "abilities": [
+          {
+            "ability": {
+              "name": "compound-eyes"
+            }
+          },
+          {
+            "ability": {
+              "name": "tinted-lens"
+            }
+          }
+        ],
+        "stats": [
+          {
+            "base_stat": 60,
+            "stat": {
+              "name": "hp"
+            }
+          },
+          {
+            "base_stat": 45,
+            "stat": {
+              "name": "attack"
+            }
+          },
+          {
+            "base_stat": 50,
+            "stat": {
+              "name": "defense"
+            }
+          },
+          {
+            "base_stat": 90,
+            "stat": {
+              "name": "special-attack"
+            }
+          },
+          {
+            "base_stat": 80,
+            "stat": {
+              "name": "special-defense"
+            }
+          },
+          {
+            "base_stat": 70,
+            "stat": {
+              "name": "speed"
+            }
+          }
+        ]
+      },
+      {
+        "id": 10189,
+        "name": "butterfree-gmax",
+        "height": 170,
+        "weight": 10000,
+        "types": [
+          {
+            "type": {
+              "name": "bug"
+            }
+          },
+          {
+            "type": {
+              "name": "flying"
+            }
+          }
+        ],
+        "abilities": [
+          {
+            "ability": {
+              "name": "compound-eyes"
+            }
+          },
+          {
+            "ability": {
+              "name": "tinted-lens"
+            }
+          }
+        ],
+        "stats": [
+          {
+            "base_stat": 60,
+            "stat": {
+              "name": "hp"
+            }
+          },
+          {
+            "base_stat": 45,
+            "stat": {
+              "name": "attack"
+            }
+          },
+          {
+            "base_stat": 50,
+            "stat": {
+              "name": "defense"
+            }
+          },
+          {
+            "base_stat": 90,
+            "stat": {
+              "name": "special-attack"
+            }
+          },
+          {
+            "base_stat": 80,
+            "stat": {
+              "name": "special-defense"
+            }
+          },
+          {
+            "base_stat": 70,
+            "stat": {
+              "name": "speed"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

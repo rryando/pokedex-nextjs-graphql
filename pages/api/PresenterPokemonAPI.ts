@@ -44,10 +44,8 @@ export default function usePresenterPokemonAPI() {
       } else {
         triggerFetch();
       }
-
-      console.log(storageFetchResponse);
       // @ts-ignore
-      setOfflinePokemonList(storageFetchResponse);
+      if (storageFetchResponse) setOfflinePokemonList(storageFetchResponse);
     }
 
     getPokemonDataFromStorage();

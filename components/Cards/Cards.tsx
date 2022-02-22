@@ -22,8 +22,8 @@ export default function Cards(props: CardProps) {
   };
 
   return (
-    <Link href={props.name || ""}>
-      <div className={styles.card}>
+    <Link href={props.name} data-cy="card-nav-link" passHref>
+      <div className={styles.card} id={"pokemon-homepage-card"}>
         {props.isLoading ? (
           <>
             <div className={styles.skeletonBox}>
@@ -45,7 +45,9 @@ export default function Cards(props: CardProps) {
             />
             <div className={styles.cardInfoContainer}>
               {props.offlineReady && (
-                <button className={styles.pillButton}>{"offline ✔️ "}</button>
+                <button className={styles.pillButton} id={"offline-bookmark"}>
+                  {"offline ✔️ "}
+                </button>
               )}
               <h4>
                 <b>{parseId(props.id)}</b>

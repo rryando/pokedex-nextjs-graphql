@@ -22,7 +22,11 @@ export default function Home() {
         </div>
       )}
 
-      <div className={styles.pokemonCardContainer} onScroll={handleScroll}>
+      <div
+        className={styles.pokemonCardContainer}
+        id={"scroll-container"}
+        onScroll={handleScroll}
+      >
         <div className={styles.pokemonCardGridWrapper}>
           {pokemonData.pokemons?.map(
             (pokemon: PokemonResultType, idx: number) => (
