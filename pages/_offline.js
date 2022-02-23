@@ -1,11 +1,13 @@
 import React from "react";
-import styles from "../styles/Home.module.css";
-import { Cards } from "../components";
+import { Overlay } from "../components/blocks";
 
 export default function offlineMode() {
   return (
-    <div className={styles.container}>
-      <h4>{"you are offline"}</h4>
+    <div>
+      <Overlay
+        title={"OFFLINE: No internet connection detected"}
+        content={"your activity may be limited"}
+      />
     </div>
   );
 }
